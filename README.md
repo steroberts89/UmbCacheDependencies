@@ -12,8 +12,11 @@ Usage is as follows:
                 "key",
                 "value", 
                 new UmbracoDependency(
-                    new ContentDependency(1234),
-                    new MediaDependency(124)
+                    new ContentDependency(1234), // tickles cache only when document 1234 is updated.
+                    new ContentDependency(1234,true), //tickles cache when document 1234 and its children are updated.
+                    new AllContentOfTypeDependency(1235), //tickles cache when any document of document type 1235 is updated.
+                    new MediaDependency(124), //tickles cache when any media item of media type 124 is updated.
+                    new AllMediaOfTypeDependency(1032)//tickles cache when any media of media type 1032 is updated.
                     ), 
                 Cache.NoAbsoluteExpiration,
                 Cache.NoSlidingExpiration, 
