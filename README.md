@@ -5,7 +5,25 @@ UmbCacheDependencies
 
 This project provides the ability to expire items within the .Net Cache when a content/media type is changed within umbraco.
 
-THIS IS CURRENT BETA!!!
+Usage is as follows:
+
+            HttpContext.Current.Cache.Add(
+                "key",
+                "value", 
+                new UmbracoDependency(
+                    new ContentDependency(1234),
+                    new MediaDependency(124)
+                    ), 
+                Cache.NoAbsoluteExpiration,
+                Cache.NoSlidingExpiration, 
+                CacheItemPriority.Normal, 
+                null
+            );
+            
+          
+You can have as many ContentDependency/MediaDependencies as you wish.
+
+THIS IS CURRENTLY BETA!!!
 
 
 Currently you can provide cache dependency on a single content item id and a media item id.
