@@ -1,9 +1,10 @@
 UmbCacheDependencies
 ====================
+THIS IS CURRENTLY BETA!!!
+====================
+.Net Cache Dependency Handlers for content and media.
 
-.Net Cache Dependency Handlers for content and media etc.
-
-This project provides the ability to expire items within the .Net Cache when a content/media type is changed within umbraco.
+This project provides the ability to expire items within the .Net Cache when a content item is changed within umbraco.
 
 Usage is as follows:
 
@@ -21,10 +22,12 @@ Usage is as follows:
             );
             
           
-You can have as many ContentDependency/MediaDependencies as you wish.
+You can have as many MediaDependencies as you wish.
 
-THIS IS CURRENTLY BETA!!!
+Currrent dependencies are as follows:
 
 
-Currently you can provide cache dependency on a single content item id and a media item id.
-Future developments may allow you to tie into a Document type name/Media type name so the cache is expired when any of those document types are edited.
+* ContentDependency - Requires a node Id which to tie to, if that content item get updated, then the cache is flushed. Has an optional parameter of catchChildren, this will make the cache expire if any children of the specified node are edited.
+* MediaDependency - Accepts a media Id which to tie to, if that content item get updated, then the cache is flushed for that item.
+* AllMediaOfTypeDependency - Requires a node ID of a media type. If any media items of that type are changed, then the cache is flushed.
+* AllContentOfTypeDependency - Requires a node ID of a document type or an alias. If any documents of that type are changed, then the cache is flushed.
