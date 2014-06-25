@@ -5,12 +5,24 @@ using System.Web;
 using UmbCacheDependencies.Dependencies;
 using umbraco.BusinessLogic;
 using Umbraco.Core.Logging;
+using Umbraco.Core.Models;
 
 namespace UmbCacheDependencies
 {
+    /// <summary>
+    /// Manages our BaseUmbracoDependencies and receives a calls from the events in <see cref="EventsHandlers"/> 
+    /// </summary>
     static class DependencyProxy
     {
+        /// <summary>
+        /// List of currently active UmrbacoDependencies
+        /// </summary>
+
         static readonly List<BaseUmbracoDependency> CurrentDependencies = new List<BaseUmbracoDependency>();
+
+        /// <summary>
+        /// This is a temporary removal queue used to store items which should be removed from the queue. Items are added from UmbracoDependency.DependencyDispose and removed from DependencyProxy.CallDependencies
+        /// </summary>
         static readonly List<BaseUmbracoDependency> CurrentRemovalQueue = new List<BaseUmbracoDependency>();
         
         internal static void AddDependencies(BaseUmbracoDependency[] dependencies)
@@ -33,16 +45,33 @@ namespace UmbCacheDependencies
                 }
             }
         }
-        internal static void CallDependencies(BaseUmbracoDependency.DependencyTypesEnum contentType, int[] ids)
+
+        /// <summary>
+        /// Debug method to help ensure dependencies are removed.
+        /// </summary>
+        /// <returns></returns>
+        public static int GetCurrentDependencies()
+        {
+            lock (CurrentDependencies)
+            {
+                return CurrentDependencies.Count;
+            }
+        }
+
+        /// <summary>
+        /// Loops through all the current umbraco dependencies and 
+        /// </summary>
+        /// <param name="contentType"></param>
+        /// <param name="contentItems"></param>
+        internal static void CallDependencies(BaseUmbracoDependency.DependencyTypesEnum contentType, List<IContentBase> contentItems)
         {
             lock (CurrentDependencies)
             {
                 LogHelper.Info(typeof (DependencyProxy),
-                    "Event Detected:" + contentType + " for ids:" + string.Join(",", ids));
+                    "Event Detected:" + contentType + " for ids:" + string.Join(",", contentItems.Select(x=>x.Id)));
                 foreach (BaseUmbracoDependency baseUmbracoDependency in CurrentDependencies)
                 {
-                    //Collection was modified; enumeration operation may not execute. thrown as something calls the edit list in the HandleEvent
-                    baseUmbracoDependency.HandleEvent(contentType, ids.ToArray());
+                    baseUmbracoDependency.HandleEvent(contentType, contentItems);
                 }
                 lock (CurrentRemovalQueue)
                 {
@@ -52,7 +81,7 @@ namespace UmbCacheDependencies
             }
         }
         
-        public static void QueueItemsToBeRemoved(BaseUmbracoDependency[] myDependencies)
+        public static void AddQueueItemsToBeRemoved(BaseUmbracoDependency[] myDependencies)
         {
             lock (CurrentRemovalQueue)
             {

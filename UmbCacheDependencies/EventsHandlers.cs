@@ -13,6 +13,9 @@ using Umbraco.Core.Services;
 
 namespace UmbCacheDependencies
 {
+    /// <summary>
+    /// This class ties into the umbraco evnts
+    /// </summary>
    internal class EventsHandlers : IApplicationEventHandler
     {
        public void OnApplicationInitialized(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
@@ -39,32 +42,32 @@ namespace UmbCacheDependencies
 
        void MediaService_Deleted(IMediaService sender, DeleteEventArgs<IMedia> e)
        {
-           DependencyProxy.CallDependencies(BaseUmbracoDependency.DependencyTypesEnum.Media, e.DeletedEntities.Select(x => x.Id).ToArray());
+           DependencyProxy.CallDependencies(BaseUmbracoDependency.DependencyTypesEnum.Media, e.DeletedEntities.Cast<IContentBase>().ToList());
        }
 
        void MediaService_Saved(IMediaService sender, SaveEventArgs<IMedia> e)
        {
-           DependencyProxy.CallDependencies(BaseUmbracoDependency.DependencyTypesEnum.Media, e.SavedEntities.Select(x => x.Id).ToArray());
+           DependencyProxy.CallDependencies(BaseUmbracoDependency.DependencyTypesEnum.Media, e.SavedEntities.Cast<IContentBase>().ToList());
        }
 
        void MediaService_Moved(IMediaService sender, MoveEventArgs<IMedia> e)
        {
-           DependencyProxy.CallDependencies(BaseUmbracoDependency.DependencyTypesEnum.Media, e.MoveInfoCollection.Select(x => x.Entity.Id).ToArray());
+           DependencyProxy.CallDependencies(BaseUmbracoDependency.DependencyTypesEnum.Media, e.MoveInfoCollection.Select(x=>x.Entity).Cast<IContentBase>().ToList());
        }
        
        void ContentService_Deleted(IContentService sender, DeleteEventArgs<IContent> e)
        {
-           DependencyProxy.CallDependencies(BaseUmbracoDependency.DependencyTypesEnum.Content, e.DeletedEntities.Select(x => x.Id).ToArray());
+           DependencyProxy.CallDependencies(BaseUmbracoDependency.DependencyTypesEnum.Content, e.DeletedEntities.Cast<IContentBase>().ToList());
        }
 
        private void DocumentMoved(IContentService sender, MoveEventArgs<IContent> e)
        {
-           DependencyProxy.CallDependencies(BaseUmbracoDependency.DependencyTypesEnum.Content, e.MoveInfoCollection.Select(x => x.Entity.Id).ToArray());
+           DependencyProxy.CallDependencies(BaseUmbracoDependency.DependencyTypesEnum.Content, e.MoveInfoCollection.Select(x=>x.Entity).Cast<IContentBase>().ToList());
        }
 
        private void DocumentPublished(IPublishingStrategy sender, PublishEventArgs<IContent> e)
        {
-           DependencyProxy.CallDependencies(BaseUmbracoDependency.DependencyTypesEnum.Content, e.PublishedEntities.Select(x => x.Id).ToArray());
+           DependencyProxy.CallDependencies(BaseUmbracoDependency.DependencyTypesEnum.Content, e.PublishedEntities.Cast<IContentBase>().ToList());
        }
     }
 }

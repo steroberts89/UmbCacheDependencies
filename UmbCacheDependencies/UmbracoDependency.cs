@@ -15,9 +15,17 @@ using UmbCacheDependencies.Dependencies;
 
 namespace UmbCacheDependencies
 {
+    /// <summary>
+    /// This is a .Net Cache dependency, It can be linked to multiple umbraco dependencies
+    /// </summary>
     public class UmbracoDependency : CacheDependency
     {
         private BaseUmbracoDependency[] _myDependencies;
+
+        /// <summary>
+        /// This is a .Net Cache dependency, It can be linked to multiple Umbraco Dependencies
+        /// </summary>
+        /// <param name="dependencies">List of Umbraco Dependencies for the Cache to be flushed on</param>
         public UmbracoDependency(params BaseUmbracoDependency[] dependencies)
         {
             LogHelper.Info<UmbracoDependency>("Initialized");
@@ -31,16 +39,23 @@ namespace UmbCacheDependencies
             DependencyProxy.AddDependencies(dependencies);
         }
 
+        /// <summary>
+        /// Called from the BaseUmbracoDependency when a change is detected
+        /// </summary>
         internal void ChangeDetected()
         {
             LogHelper.Info<UmbracoDependency>("Telling base of a change detected");
             base.NotifyDependencyChanged(null, null);
         }
+
+        /// <summary>
+        /// Class specific to .net cache providers, Cleans up our BaseUmbracoDependencys
+        /// </summary>
         protected override void DependencyDispose()
         {
             LogHelper.Info<UmbracoDependency>("Cleaning up as dependency disposed called");
-            
-            DependencyProxy.QueueItemsToBeRemoved(_myDependencies);
+
+            DependencyProxy.AddQueueItemsToBeRemoved(_myDependencies);
             
             base.DependencyDispose();
         }

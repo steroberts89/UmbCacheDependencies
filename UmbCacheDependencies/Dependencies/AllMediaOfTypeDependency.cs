@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using Umbraco.Core;
+using Umbraco.Core.Logging;
 using Umbraco.Core.Models;
+using Umbraco.Web;
 
 namespace UmbCacheDependencies.Dependencies
 {
-    public class MediaDependency : BaseUmbracoDependency
+    public class AllMediaOfTypeDependency : BaseUmbracoDependency
     {
         private int? _associatedId;
-
         /// <summary>
-        /// The Cache will expire when the specified node is updated.
+        /// if any media items of the specified type are updated, the cache will be flushed
         /// </summary>
-        /// <param name="id">id of the umbraco node to attach to.</param>
-        public MediaDependency(int id)
+        /// <param name="id"></param>
+        public AllMediaOfTypeDependency(int id)
         {
-            _associatedId = id;
+              _associatedId = id;
         }
 
         internal override void HandleEvent(DependencyTypesEnum typeEnum, List<IContentBase> contentItems)
@@ -26,7 +27,7 @@ namespace UmbCacheDependencies.Dependencies
                 {
                     foreach (var item in contentItems)
                     {
-                        if (_associatedId == item.Id)
+                        if (_associatedId == item.ContentTypeId)
                         {
                             base.ChangeDetected();
                             break;
@@ -36,5 +37,6 @@ namespace UmbCacheDependencies.Dependencies
 
             }
         }
+    
     }
 }

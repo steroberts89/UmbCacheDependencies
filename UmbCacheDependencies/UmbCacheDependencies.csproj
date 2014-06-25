@@ -215,12 +215,13 @@
   <ItemGroup>
     <Compile Include="Dependencies\BaseUmbracoDependency.cs" />
     <Compile Include="Dependencies\ContentDependency.cs" />
+    <Compile Include="Dependencies\AllContentOfTypeDependency.cs" />
+    <Compile Include="Dependencies\AllMediaOfTypeDependency.cs" />
     <Compile Include="Dependencies\MediaDependency.cs" />
     <Compile Include="DependencyProxy.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="UmbracoDependency.cs" />
-    <Compile Include="Old\Playground.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Old\UmbracoContentCacheDependency.cs" />
     <Compile Include="EventsHandlers.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -232,9 +233,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
