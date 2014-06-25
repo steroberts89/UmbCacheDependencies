@@ -10,12 +10,6 @@ namespace UmbCacheDependencies.Dependencies
         {
             _associatedId = id;
         }
-
-        public MediaDependency(string mediaTypeName)
-        {
-           throw new NotImplementedException();
-        }
-
         internal override void HandleEvent(DependencyTypesEnum typeEnum, int[] ids)
         {
             if (typeEnum == DependencyTypesEnum.Media)

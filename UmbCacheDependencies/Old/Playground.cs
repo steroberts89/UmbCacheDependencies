@@ -17,11 +17,18 @@ namespace UmbCacheDependencies.Old
                 Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
 
 
-            HttpContext.Current.Cache.Add("", "", 
-                new UmbracoDependency(new ContentDependency(1234), new ContentDependency("docTypeAlias"), new MediaDependency(124), new MediaDependency("image"))
-
-,
-                Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
+            HttpContext.Current.Cache.Add(
+                "key",
+                "value", 
+                new UmbracoDependency(
+                    new ContentDependency(1234),
+                    new MediaDependency(124)
+                    ), 
+                Cache.NoAbsoluteExpiration,
+                Cache.NoSlidingExpiration, 
+                CacheItemPriority.Normal, 
+                null
+            );
         }
     }
 }
