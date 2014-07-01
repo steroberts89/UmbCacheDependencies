@@ -210,6 +210,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Readme.txt" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -220,6 +221,7 @@
     <Compile Include="Dependencies\MediaDependency.cs" />
     <Compile Include="DependencyProxy.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="HtmlHelperRenderExtensions.cs" />
     <Compile Include="UmbracoDependency.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EventsHandlers.cs" />
